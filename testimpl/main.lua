@@ -80,6 +80,16 @@ showInv = menu {
 };
 take(showInv);
 
+showHint = menu {
+	nam = 'Подсказки';
+	inv = function()
+		if checkLogic {-2} then
+			p 'Очаровательную принцессу Елену Прекрасную удерживает у себя злобный дракон. Поговорите с ним по душам -- может быть, вам удастся его переубедить?';
+		end;
+	end;
+};
+take(showHint);
+
 -- Aaaaand here we go.
 
 main = room {
