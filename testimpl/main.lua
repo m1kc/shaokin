@@ -67,7 +67,7 @@ function setLogic(logic)
 	end;
 end
 
-showInv = obj {
+showInv = menu {
 	nam = 'Инвентарь';
 	inv = function()
 		p 'У тебя в инвентаре:';
@@ -97,10 +97,13 @@ main = room {
 		result = result.. '^';
 		-- actions
 		if checkLogic {-4} then
-			result = result.. '^-- {qq1|Взять меч}';
+			result = result.. '^~ {qq1|Взять меч}';
 		end;
 		if checkLogic {} then
-			result = result.. '^-- {qq2|Пощекотать дракону яйца}';
+			result = result.. '^~ {qq2|Пощекотать дракону яйца}';
+		end;
+		if checkLogic {} then
+			result = result.. '^~ {qq3|Поговорить с драконом}';
 		end;
 		-- ok, we're done
 		return result;
@@ -108,6 +111,40 @@ main = room {
 	obj = {
 		xact('qq1', code [[ setLogic {4}; return 'Ты с гордым видом берёшь в руки меч.'; ]] );
 		xact('qq2', code [[ return 'Дракон дико хохочет.'; ]] );
+		xact('qq3', code [[ walk(dragondlg); ]] );
+	};
+};
+
+dragondlg = room {
+	nam = 'Душевный разговор с драконом';
+	forcedsc = true;
+	dsc = function()
+		result = '';
+		-- get description
+		desc = '-- Эй, рыцарь!';
+		-- ok, set it
+		result = result.. desc;
+		result = result.. '^';
+		-- actions
+		if checkLogic {} then
+			result = result.. '^{qq10|-- Дракон, я твой дом труба шатал.}';
+		end;
+		if checkLogic {} then
+			result = result.. '^{qq11|-- Ты кто?}';
+		end;
+		if checkLogic {-4} then
+			result = result.. '^{qq12|-- Где мой меч, блеать?}';
+		end;
+		-- end dialog
+		result = result.. '^~ {exit|Закончить диалог}';
+		-- ok, we're done
+		return result;
+	end;
+	obj = {
+		xact('qq10', code [[ return '-- А я твой мама вот так-то и вот так-то.'; ]] );
+		xact('qq11', code [[ return '-- Ну я дракон, типа. Древний, как говно мамонта, и столь же ужасающий.'; ]] );
+		xact('qq12', code [[ return '-- Ну хз, в кустах глянь.'; ]] );
+		xact('exit', code [[ back(); ]] );
 	};
 };
 
