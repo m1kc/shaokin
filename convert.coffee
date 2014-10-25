@@ -48,6 +48,7 @@ code += """
 	-- Basic TKR things
 
 	_vars = {};
+	_karma = 0;
 
 	function init()
 		for i = 1,2000 do
@@ -82,6 +83,14 @@ code += """
 			_vars[index] = target;
 		end;
 	end
+
+	showKarma = menu {
+		nam = 'Карма';
+		inv = function()
+			p('Твоя карма сейчас равна ' .. _karma .. '.');
+		end;
+	};
+	take(showKarma);
 
 	showInv = menu {
 		nam = 'Инвентарь';
